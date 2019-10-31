@@ -1,0 +1,113 @@
+Basic:-
+Question 1:-
+select politician_id, count(id) num_votes
+from votes
+where politician_id = 524
+
+
+Question 2:-
+select a.name,  count(*)  num_votes
+FROM congress_members a INNER JOIN votes b ON a.id = b.politician_id WHERE a.name = 'Sen. Olympia Snowe'
+
+
+Question 3:-
+select a.name, count(b.politician_id) num_votes
+from congress_members a, votes b
+where a.id=b.politician_id
+and a.name = 'Rep. Erik Paulsen'
+
+
+Question 4:-
+select a.name, count(b.politician_id) num_votes
+from congress_members a, votes b
+where a.id=b.politician_id
+group by a.id 
+order by count(b.politician_id) desc 
+
+
+Question 5:-
+select a.name, count(b.politician_id) num_votes
+from congress_members a, votes b
+where a.id=b.politician_id
+group by a.id 
+order by count(b.politician_id) 
+
+
+Advance:-
+Question 1:-
+select a.name, count(b.politician_id) votes
+from congress_members a, votes b
+where a.id=b.politician_id
+group by a.id 
+order by count(b.politician_id) desc limit 1
+
+
+Question 2:-
+select a.first_name, a.last_name, a.party, a.gender,c.name
+from voters a, votes b, congress_members c
+where a.id = b.voter_id
+and b.politician_id = c.id
+and b.politician_id =
+(select b.politician_id
+from congress_members a, votes b
+where a.id=b.politician_id
+group by a.name 
+order by count(b.politician_id) desc limit 1)
+
+Question 3:-
+select c.name, c.location, grade_1996, count(b.politician_id) num_votes
+from voters a, votes b, congress_members c
+where a.id = b.voter_id
+and b.politician_id = c.id
+and c.grade_current < 9
+group by b.politician_id 
+
+Question 4:-
+select c.location, count(b.politician_id) num_voters
+from votes b, congress_members c
+where b.politician_id = c.id
+group by c.location
+order by count(b.politician_id) desc limit 10
+
+Question 5:-
+select b.first_name, b.last_name, b.gender, b.party, age, c.location
+from votes a, voters b, congress_members c
+where b.id = a.voter_id
+and a.politician_id= c.id
+and c.location in
+(select c.location
+from votes b, congress_members c
+where b.politician_id = c.id
+group by c.location
+order by count(b.politician_id) desc limit 10)
+
+Question 6:-
+select b.first_name, b.last_name, b.id voter_id, COUNT(*)
+from votes a, voters b
+where a.voter_id = b.id 
+group by a.voter_id
+having count(a.voter_id) >2
+
+
+Question 7:-
+select a.id votes_id, 
+b.first_name voter_first_name, 
+b.last_name voter_last_name,
+c.name politician_name,
+count (a.politician_id) votes_no
+from votes a, voters b, congress_members c
+where a.voter_id = b.id 
+and c.id = a.politician_id
+group by a.voter_id, a.politician_id
+having count(a.politician_id) >1
+and count (a.voter_id) > 1
+
+
+
+
+
+
+
+
+
+
